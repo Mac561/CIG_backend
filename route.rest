@@ -1,0 +1,19 @@
+Get http://localhost:8081/users
+
+###
+
+GET http://localhost:8081/users/21
+
+###
+
+@authToken = {{}}
+
+POST http://localhost:8081/user
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+    "id": "1234",
+    "name": "Diego",
+    "trainingComplete": false
+}

@@ -1,0 +1,12 @@
+version: "3.6"
+
+services:
+  cig_backend:
+    container_name: cig_backend
+    build: ./
+    command: npm start
+    working_dir: /usr/src/CIG_backend
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./:/usr/src/CIG_backend
