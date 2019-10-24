@@ -2,7 +2,13 @@ Get http://localhost:8081/users
 
 ###
 
-GET http://localhost:8081/users/21
+GET http://localhost:8081/users/5db138d1cb78f415b59c612b
+
+
+###
+
+GET http://localhost:8081/users/5db132376917b612eed18ae1
+
 
 ###
 
@@ -13,7 +19,22 @@ Authorization: {{authToken}}
 Content-Type: application/json
 
 {
-    "id": "1234",
     "name": "Diego",
     "trainingComplete": false
 }
+
+
+###
+
+POST http://localhost:8081/user
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+    "name": "Dany",
+    "trainingComplete": true
+}
+
+###
+
+DELETE http://localhost:8081/user/5db139ef7901191645690958
