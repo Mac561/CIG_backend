@@ -28,6 +28,10 @@ The way to use it is to seperate each endpoint test with the sign:# three exact 
 (###) and add new tests to whatever routes you want as like the examples i added
 
 
+Errors:
+if you get any errors please make sure the port is correct on all the files
+you are calling the port in (8081 etc) like in the server.js or in the route.rest
+
 
 Please look at the comments on the files as i have tried to explain them the
 best way i could, good luck!

@@ -45,11 +45,11 @@ server.delete("/user/:id", (req, res) => {
   user.deleteUser(req, res);
 });
 
-server.listen(process.env.PORT || 8082, () => {
+server.listen(process.env.PORT || 8081, () => {
   //running on port 8080 OR enviroment port
   if (process.env.PORT != undefined) {
     console.log(`running on port ${process.env.PORT}`);
   } else {
-    console.log("running on port 8082");
+    console.log("running on port 8081");
   }
 });
