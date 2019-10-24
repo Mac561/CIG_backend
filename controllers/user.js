@@ -1,4 +1,5 @@
 const mongoUsers = require("../models/mongoUsers"); //importing schema
+const mongoLogin = require("../models/mongoLogin");
 
 const handleGetUsers = async (req, res) => {
   //get all users
@@ -27,21 +28,31 @@ const handleGetUser = async (req, res) => {
   res.send(user); //send user object
 };
 
-const newSub = async (req, res) => {
+const newSub = async (req, res, bcrypt) => {
   //create new user
   //new user
+
+  // const password = bcrypt.hashSync(req.body.password);
+
   const user = new mongoUsers({
     //create new user object
     id: req.body.id,
+    email: req.body.email,
     name: req.body.name,
     trainingComplete: req.body.trainingComplete
   });
 
+  // const login = new mongoLogin({
+  //   email: req.body.email,
+  //   hash: req.body.password
+  // });
+
   try {
-    existingUser = await mongoUsers.find(req.params.name); //find if user exists through name (should be through something like email)
+    existingUser = await mongoUsers.findById(req.params.id);
     if (existingUser == null) {
       //if user does not exist
       const newUser = await user.save(); //save to mongoUsers
+      // const newLogin = await login.save();
       res.status(201).json(newUser); //send successful status and user object
     } else {
       return res.status(404).json({ message: "user already exists" }); //send user already exists

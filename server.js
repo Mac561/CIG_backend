@@ -10,6 +10,7 @@ const bcrypt = require("bcrypt"); //for hashing passwords
 
 //controllers
 const user = require("./controllers/user"); //user controller (user.js)
+const signIn = require("./controllers/signIn");
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
 const db = mongoose.connection;
@@ -37,13 +38,16 @@ server.get("/users/:id", (req, res) => {
 
 server.post("/user", (req, res) => {
   // add new user
-  user.newSub(req, res);
+  user.newSub(req, res, bcrypt);
 });
 
 server.delete("/user/:id", (req, res) => {
   //delete user by id
   user.deleteUser(req, res);
 });
+
+//signIn
+server.post("/signIn", (req, res) => {});
 
 server.listen(process.env.PORT || 8081, () => {
   //running on port 8080 OR enviroment port

@@ -19,7 +19,8 @@ Authorization: {{authToken}}
 Content-Type: application/json
 
 {
-    "name": "Diego",
+    "email": "diego@csumb.edu",
+    "name": "diego",
     "trainingComplete": false
 }
 
@@ -31,10 +32,16 @@ Authorization: {{authToken}}
 Content-Type: application/json
 
 {
-    "name": "Dany",
+    "email": "dany@csumb.edu",
+    "password": "hello",
+    "name": "dany",
     "trainingComplete": true
 }
 
 ###
 
-DELETE http://localhost:8081/user/5db139ef7901191645690958
+DELETE http://localhost:8081/user/5db1e2a3e9d1781f4b1a33c8
+
+
+###
+
