@@ -6,24 +6,26 @@ const server = express(); //declaring the server
 const mongoose = require("mongoose"); //connecting to mongodb
 const bodyParser = require("body-parser"); //request body json parser
 const cors = require("cors"); //what domains can access server
-const bcrypt = require("bcrypt"); //for hashing passwords
+const bcrypt = require("bcryptjs"); //for hashing passwords
 
 //controllers
 const user = require("./controllers/user"); //user controller (user.js)
 const signIn = require("./controllers/signIn");
 
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
-const db = mongoose.connection;
-db.on("error", err => console.error(err));
-db.once("open", () => {
-  console.log("Connected to database");
-});
+// const db = require("./config/keys").mongoURI;
+const db = "mongodb://mongo:27017/docker-node-mongo";
+mongoose
+  .connect(db, { useUnifiedTopology: true })
+  .then(() => console.log("MongoDB Connected..."))
+  .catch(err => console.log(err));
+
+const port = process.env.PORT || 8082;
 
 server.use(bodyParser.json()); //be able to read json
 server.use(cors()); //domain access
 
+//route to make sure express is working
 server.get("/", (req, res) => {
-  //route to make sure express is working
   res.send("its working");
 });
 
@@ -49,11 +51,7 @@ server.delete("/user/:id", (req, res) => {
 //signIn
 server.post("/signIn", (req, res) => {});
 
-server.listen(process.env.PORT || 8081, () => {
+server.listen(port, () => {
   //running on port 8080 OR enviroment port
-  if (process.env.PORT != undefined) {
-    console.log(`running on port ${process.env.PORT}`);
-  } else {
-    console.log("running on port 8081");
-  }
+  console.log(`server running on ${port}`);
 });

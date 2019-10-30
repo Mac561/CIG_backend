@@ -6,7 +6,22 @@ services:
     build: ./
     command: npm start
     working_dir: /usr/src/CIG_backend
+    links:
+      - mongo
+      - redis
     ports:
-      - "8081:8081"
+      - "8082:8082"
     volumes:
       - ./:/usr/src/CIG_backend
+
+  #redis
+  redis:
+    image: redis
+    ports:
+      - "6370:6370"
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
