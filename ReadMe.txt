@@ -1,14 +1,18 @@
-If Docker works!! (docker is pending as of now)
+If Docker works!! (Docker is up)
 
 1. run docker on your computer
-2. to run docker services : docker-compose up --build
-3. to stop docker servces : docker-compose down
-4. stop docker on your computer
+2. comment out line 15
+3. uncomment out line 16
+4. to run docker services : docker-compose up --build
+5. to stop docker servces : docker-compose down
+6. stop docker on your computer
 
 If Docker does not work!!
 
-1. to run server w/ mongoDB : npm start
-2. to stop server control(key) + z
+1. uncomment line 15 from server.js
+2. comment out line 16 from server.js
+3. to run server w/ mongoDB : npm start
+4. to stop server control(key) + z
 
 comments:
 RESTful Routes:
