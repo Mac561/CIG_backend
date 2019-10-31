@@ -5,7 +5,7 @@ const loginSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  hash: {
+  password: {
     type: String,
     require: true
   }

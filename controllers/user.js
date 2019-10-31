@@ -1,4 +1,4 @@
-const mongoUsers = require("../models/mongoUsers"); //importing schema
+const mongoUsers = require("../models/mongoUsers");
 const mongoLogin = require("../models/mongoLogin");
 
 const handleGetUsers = async (req, res) => {
@@ -8,57 +8,71 @@ const handleGetUsers = async (req, res) => {
     .then(users => res.json(users));
 };
 
+const getLogins = async (req, res) => {
+  mongoLogin.find().then(logins => res.json(logins));
+};
+
 const handleGetUser = async (req, res) => {
-  //get user with id
-  const { id } = req.params; // pull id from /:id <- parameters
-  let user; //declare user
+  const { id } = req.params;
+  let user;
   try {
-    user = await mongoUsers.findById(req.params.id); //look for user by id
+    user = await mongoUsers.findById(req.params.id);
     if (user == null) {
-      //if user does not exist
       return res.status(404).json({ message: "user does not exist" });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message }); //send message error
+    return res.status(500).json({ message: error.message });
   }
-
-  res.send(user); //send user object
+  res.send(user);
 };
 
-const newSub = async (req, res, bcrypt) => {
-  const { id, name, email } = req.body;
+const newUser = async (req, res, bcrypt) => {
+  const { name, email, password } = req.body;
 
   const newUser = new mongoUsers({
     name,
     email
   });
 
-  //check if user exists, if it doesn't then save
-  newUser.save().then(user => res.json(user));
+  const hashPass = bcrypt.hashSync(password);
+  console.log("regular password ", password, "hashed: ", hashPass);
+
+  const newLogin = new mongoLogin({
+    email,
+    password: hashPass
+  });
+
+  const emailName = email;
+
+  const existingUser = await mongoUsers.findOne({ email: emailName });
+  if (existingUser) {
+    return res.status(404).json({ message: "user already exists" });
+  } else {
+    newUser.save().then(user => res.json(user));
+    newLogin.save().then(log => {});
+  }
 };
 
 const deleteUser = async (req, res) => {
-  //delete user with id
-  const { id } = req.params; //pull id from params
-  let user; //declare user beforehand
+  const { id } = req.params;
+  let user;
   try {
-    user = await mongoUsers.findById(req.params.id); //find user through id
+    user = await mongoUsers.findById(req.params.id);
     if (user == null) {
-      //if user does not exist
-      return res.status(404).json({ message: "user does not exist" }); //send status & message
+      return res.status(404).json({ message: "user does not exist" });
     } else {
-      user.remove(); //if user does exist remove user from mongousers
-      res.json({ message: `deleted user with id ${id}` }); //send response message
+      user.remove();
+      res.json({ message: `deleted user with id ${id}` });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message }); //if error send message
+    return res.status(500).json({ message: error.message });
   }
 };
 
 module.exports = {
-  //export all functions to import in routes
   handleGetUser: handleGetUser,
   handleGetUsers,
-  newSub,
-  deleteUser
+  newUser,
+  deleteUser,
+  getLogins
 };

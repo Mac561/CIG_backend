@@ -9,7 +9,7 @@ const cors = require("cors"); //what domains can access server
 const bcrypt = require("bcryptjs"); //for hashing passwords
 
 //controllers
-const user = require("./controllers/user"); //user controller (user.js)
+const user = require("./controllers/user");
 const signIn = require("./controllers/signIn");
 
 // const db = require("./config/keys").mongoURI;
@@ -29,29 +29,35 @@ server.get("/", (req, res) => {
   res.send("its working");
 });
 
+//get all users
 server.get("/users", (req, res) => {
-  //get all users
   user.handleGetUsers(req, res);
 });
-server.get("/users/:id", (req, res) => {
-  //get a user with id
+
+//get a user with id
+server.get("/user/:id", (req, res) => {
   user.handleGetUser(req, res);
 });
 
+// add new user
 server.post("/user", (req, res) => {
-  // add new user
-  user.newSub(req, res, bcrypt);
+  user.newUser(req, res, bcrypt);
 });
 
+//delete user by id
 server.delete("/user/:id", (req, res) => {
-  //delete user by id
   user.deleteUser(req, res);
 });
 
+server.get("/logins", (req, res) => {
+  user.getLogins(req, res);
+});
+
 //signIn
-server.post("/signIn", (req, res) => {});
+server.post("/signIn", (req, res) => {
+  signIn.handleSignIn(req, res, bcrypt);
+});
 
 server.listen(port, () => {
-  //running on port 8080 OR enviroment port
   console.log(`server running on ${port}`);
 });
