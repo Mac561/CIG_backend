@@ -29,7 +29,7 @@ server.get("/", (req, res) => {
   res.send("its working");
 });
 
-//get all users
+//get all users -> change route
 server.get("/users", (req, res) => {
   user.handleGetUsers(req, res);
 });
@@ -39,7 +39,7 @@ server.get("/user/:id", (req, res) => {
   user.handleGetUser(req, res);
 });
 
-// add new user
+// add new user -> change route -> /user/create
 server.post("/user", (req, res) => {
   user.newUser(req, res, bcrypt);
 });
@@ -49,6 +49,8 @@ server.delete("/user/:id", (req, res) => {
   user.deleteUser(req, res);
 });
 
+
+//debub ignore
 server.get("/logins", (req, res) => {
   user.getLogins(req, res);
 });
