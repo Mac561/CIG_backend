@@ -35,7 +35,6 @@ const newUser = async (req, res, bcrypt) => {
   });
 
   const hashPass = bcrypt.hashSync(password);
-  console.log("regular password ", password, "hashed: ", hashPass);
 
   const newLogin = new mongoLogin({
     email,

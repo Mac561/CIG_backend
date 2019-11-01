@@ -54,9 +54,7 @@ server.get("/logins", (req, res) => {
 });
 
 //signIn
-server.post("/signIn", (req, res) => {
-  signIn.handleSignIn(req, res, bcrypt);
-});
+server.post("/signIn", signIn.handleAuth(bcrypt));
 
 server.listen(port, () => {
   console.log(`server running on ${port}`);
