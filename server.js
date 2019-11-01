@@ -11,11 +11,12 @@ const bcrypt = require("bcryptjs"); //for hashing passwords
 //controllers
 const user = require("./controllers/user");
 const signIn = require("./controllers/signIn");
+const auth = require("./middleware/authorization");
 
 // const db = require("./config/keys").mongoURI;
 const db = "mongodb://mongo:27017/docker-node-mongo";
 mongoose
-  .connect(db, { useUnifiedTopology: true })
+  .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected..."))
   .catch(err => console.log(err));
 
@@ -30,7 +31,7 @@ server.get("/", (req, res) => {
 });
 
 //get all users -> change route
-server.get("/user/all", (req, res) => {
+server.get("/user/all", auth.requireAuth, (req, res) => {
   user.handleGetUsers(req, res);
 });
 

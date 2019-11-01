@@ -80,5 +80,6 @@ const handleAuth = bcrypt => (req, res) => {
 };
 
 module.exports = {
-  handleAuth
+  handleAuth,
+  redisClient
 };
