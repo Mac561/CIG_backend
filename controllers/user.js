@@ -8,6 +8,7 @@ const handleGetUsers = async (req, res) => {
     .then(users => res.json(users));
 };
 
+//debugging
 const getLogins = async (req, res) => {
   mongoLogin.find().then(logins => res.json(logins));
 };
@@ -26,6 +27,7 @@ const handleGetUser = async (req, res) => {
   res.send(user);
 };
 
+//change to add new data
 const newUser = async (req, res, bcrypt) => {
   const { name, email, password } = req.body;
 
