@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true
   }
+  //admin, boolean, require
+  //department, string, no require
+  //sections, object, # of sections hardcoded, { record: int, complete: boolean }
 });
 
 module.exports = User = mongoose.model("user", userSchema);
