@@ -29,11 +29,21 @@ const handleGetUser = async (req, res) => {
 
 //change to add new data
 const newUser = async (req, res, bcrypt) => {
-  const { name, email, password } = req.body;
+  const {
+    name,
+    email,
+    password,
+    trainingComplete,
+    isAdmin,
+    department
+  } = req.body;
 
   const newUser = new mongoUsers({
     name,
-    email
+    email,
+    trainingComplete,
+    isAdmin,
+    department
   });
 
   const hashPass = bcrypt.hashSync(password);

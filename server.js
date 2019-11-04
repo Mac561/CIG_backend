@@ -11,6 +11,7 @@ const bcrypt = require("bcryptjs"); //for hashing passwords
 //controllers
 const user = require("./controllers/user");
 const signIn = require("./controllers/signIn");
+const signOut = require("./controllers/signOut");
 const auth = require("./middleware/authorization");
 
 // const db = require("./config/keys").mongoURI;
@@ -36,7 +37,7 @@ server.get("/user/all", auth.requireAuth, (req, res) => {
 });
 
 //get a user with id
-server.get("/user/:id", (req, res) => {
+server.get("/user/:id", auth.requireAuth, (req, res) => {
   user.handleGetUser(req, res);
 });
 
@@ -46,7 +47,7 @@ server.post("/user/create", (req, res) => {
 });
 
 //delete user by id
-server.delete("/user/:id", (req, res) => {
+server.delete("/user/:id", auth.requireAuth, (req, res) => {
   user.deleteUser(req, res);
 });
 
@@ -57,6 +58,9 @@ server.get("/logins", (req, res) => {
 
 //signIn
 server.post("/signIn", signIn.handleAuth(bcrypt));
+server.post("/signOut", (req, res) => {
+  signOut.signOut(req, res);
+});
 
 server.listen(port, () => {
   console.log(`server running on ${port}`);

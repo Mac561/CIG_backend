@@ -17,9 +17,16 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     require: true
+  },
+  admin: {
+    type: Boolean,
+    require: true,
+    default: false
+  },
+  department: {
+    type: String,
+    require: false
   }
-  //admin, boolean, require
-  //department, string, no require
   //sections, object, # of sections hardcoded, { record: int, complete: boolean }
 });
 
