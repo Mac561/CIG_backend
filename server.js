@@ -11,11 +11,12 @@ const bcrypt = require("bcryptjs"); //for hashing passwords
 //controllers
 const user = require("./controllers/user");
 const signIn = require("./controllers/signIn");
+const auth = require("./middleware/authorization");
 
 // const db = require("./config/keys").mongoURI;
 const db = "mongodb://mongo:27017/docker-node-mongo";
 mongoose
-  .connect(db, { useUnifiedTopology: true })
+  .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected..."))
   .catch(err => console.log(err));
 
@@ -29,8 +30,11 @@ server.get("/", (req, res) => {
   res.send("its working");
 });
 
-//get all users 
-server.get("/users/all", (req, res) => {
+
+=======
+//get all users -> change route
+server.get("/user/all", auth.requireAuth, (req, res) => {
+
   user.handleGetUsers(req, res);
 });
 
@@ -39,7 +43,8 @@ server.get("/user/:id", (req, res) => {
   user.handleGetUser(req, res);
 });
 
-// add new user
+// add new user -> change route -> /user/create
+
 server.post("/user/create", (req, res) => {
   user.newUser(req, res, bcrypt);
 });
@@ -49,12 +54,9 @@ server.delete("/user/:id", (req, res) => {
   user.deleteUser(req, res);
 });
 
-//update user
-server.put("/user/:id",(req, res)=>{
-  user.updateUser(req, res, bcrypt);
-});
+=======
+//debug ignore
 
-//debub ignore
 server.get("/logins", (req, res) => {
   user.getLogins(req, res);
 });
