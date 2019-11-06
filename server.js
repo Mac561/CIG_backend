@@ -30,8 +30,11 @@ server.get("/", (req, res) => {
   res.send("its working");
 });
 
+
+=======
 //get all users -> change route
 server.get("/user/all", auth.requireAuth, (req, res) => {
+
   user.handleGetUsers(req, res);
 });
 
@@ -41,6 +44,7 @@ server.get("/user/:id", (req, res) => {
 });
 
 // add new user -> change route -> /user/create
+
 server.post("/user/create", (req, res) => {
   user.newUser(req, res, bcrypt);
 });
@@ -50,10 +54,13 @@ server.delete("/user/:id", (req, res) => {
   user.deleteUser(req, res);
 });
 
+=======
 //debug ignore
+
 server.get("/logins", (req, res) => {
   user.getLogins(req, res);
 });
+
 
 //signIn
 server.post("/signIn", signIn.handleAuth(bcrypt));
