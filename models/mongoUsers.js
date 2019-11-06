@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  admin: {
+  isAdmin: {
     type: Boolean,
     require: true,
     default: false
@@ -26,7 +26,13 @@ const userSchema = new mongoose.Schema({
   department: {
     type: String,
     require: false
-  }
+  },
+  sections: [
+    {
+      record: Number,
+      complete: Boolean
+    }
+  ]
   //sections, object, # of sections hardcoded, { record: int, complete: boolean }
 });
 

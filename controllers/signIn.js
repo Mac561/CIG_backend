@@ -40,7 +40,7 @@ const getToken = (req, res) => {
       //later add .then in main signin, and return promise
       return res.status(400).json("Unauthorized");
     }
-    return res.json({ id: reply });
+    return res.json({ userId: reply });
   });
 };
 
@@ -51,11 +51,11 @@ const setToken = (token, id) => {
 
 const createSessions = user => {
   //create JWT token, return user data
-  const { email, id } = user;
+  const { email, id, isAdmin } = user;
   const token = signToken(email);
   return setToken(token, id)
     .then(() => {
-      return { success: "true", userId: id, token };
+      return { success: "true", userId: id, isAdmin, token };
     })
     .catch(console.log);
 };

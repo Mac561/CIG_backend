@@ -35,7 +35,8 @@ const newUser = async (req, res, bcrypt) => {
     password,
     trainingComplete,
     isAdmin,
-    department
+    department,
+    sections
   } = req.body;
 
   const newUser = new mongoUsers({
@@ -43,7 +44,8 @@ const newUser = async (req, res, bcrypt) => {
     email,
     trainingComplete,
     isAdmin,
-    department
+    department,
+    sections
   });
 
   const hashPass = bcrypt.hashSync(password);

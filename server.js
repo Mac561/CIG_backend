@@ -12,6 +12,8 @@ const bcrypt = require("bcryptjs"); //for hashing passwords
 const user = require("./controllers/user");
 const signIn = require("./controllers/signIn");
 const signOut = require("./controllers/signOut");
+
+//middleware
 const auth = require("./middleware/authorization");
 
 // const db = require("./config/keys").mongoURI;
