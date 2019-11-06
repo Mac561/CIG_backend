@@ -9,18 +9,32 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true
   },
+  admin:{
+    type: Boolean,
+    require: true,
+    require: false
+  },
+  department:{
+    type: String
+  },
   trainingComplete: {
     type: Boolean,
     require: true,
     default: false
   },
+   //array sections # of sections{ record: int, complete: boolean }  
+  sections:[{
+    record: Number,
+    complete: Boolean
+  }],
+   
   password: {
     type: String,
     require: true
   }
-  //admin, boolean, require
-  //department, string, no require
-  //sections, object, # of sections hardcoded, { record: int, complete: boolean }
+ 
+ 
+  
 });
 
 module.exports = User = mongoose.model("user", userSchema);
