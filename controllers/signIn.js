@@ -11,7 +11,8 @@ const redisClient = redis.createClient("redis://redis:6379");
 const handleSignIn = async (req, res, bcrypt) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return Promise.reject("incorrect form submission");
+    const error = `Incorrect form submission, password: ${password}, email: ${email}`;
+    return Promise.reject(error);
   }
 
   let loginInfo;
@@ -35,12 +36,16 @@ const handleSignIn = async (req, res, bcrypt) => {
 
 const getToken = (req, res) => {
   const { authorization } = req.headers;
-  redisClient.get(authorization, (err, reply) => {
+  redisClient.get(authorization, async (err, reply) => {
     if (err || !reply) {
       //later add .then in main signin, and return promise
       return res.status(400).json("Unauthorized");
     }
-    return res.json({ userId: reply });
+    const id = reply;
+    const user = await mongoUsers
+      .findById(id)
+      .catch(err => console.log("err: ", err));
+    return res.json({ user });
   });
 };
 
@@ -51,11 +56,12 @@ const setToken = (token, id) => {
 
 const createSessions = user => {
   //create JWT token, return user data
-  const { email, id, isAdmin } = user;
+  const { email, id } = user;
   const token = signToken(email);
   return setToken(token, id)
     .then(() => {
-      return { success: "true", userId: id, isAdmin, token };
+      console.log("success", "user: ", user, " token: ", token);
+      return { success: "true", user, token };
     })
     .catch(console.log);
 };
@@ -66,7 +72,9 @@ const signToken = email => {
 };
 
 const handleAuth = bcrypt => (req, res) => {
+  console.log("hitting endpoint");
   const { authorization } = req.headers;
+  console.log("BODY: ", req.body);
   return authorization
     ? getToken(req, res)
     : handleSignIn(req, res, bcrypt)

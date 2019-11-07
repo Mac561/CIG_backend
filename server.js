@@ -60,6 +60,8 @@ server.get("/logins", (req, res) => {
 
 //signIn
 server.post("/signIn", signIn.handleAuth(bcrypt));
+
+//signOut
 server.post("/signOut", (req, res) => {
   signOut.signOut(req, res);
 });
