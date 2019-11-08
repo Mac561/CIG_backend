@@ -60,7 +60,6 @@ const createSessions = user => {
   const token = signToken(email);
   return setToken(token, id)
     .then(() => {
-      console.log("success", "user: ", user, " token: ", token);
       return { success: "true", user, token };
     })
     .catch(console.log);
@@ -72,9 +71,7 @@ const signToken = email => {
 };
 
 const handleAuth = bcrypt => (req, res) => {
-  console.log("hitting endpoint");
   const { authorization } = req.headers;
-  console.log("BODY: ", req.body);
   return authorization
     ? getToken(req, res)
     : handleSignIn(req, res, bcrypt)

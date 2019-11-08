@@ -48,14 +48,13 @@ server.post("/user/create", (req, res) => {
   user.newUser(req, res, bcrypt);
 });
 
+server.put("/user/:id", auth.requireAuth, (req, res) => {
+  user.updateUser(req, res);
+});
+
 //delete user by id
 server.delete("/user/:id", auth.requireAuth, (req, res) => {
   user.deleteUser(req, res);
-});
-
-//debug ignore
-server.get("/logins", (req, res) => {
-  user.getLogins(req, res);
 });
 
 //signIn

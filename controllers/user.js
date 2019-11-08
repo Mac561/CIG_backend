@@ -1,16 +1,13 @@
 const mongoUsers = require("../models/mongoUsers");
 const mongoLogin = require("../models/mongoLogin");
 
+const Sections = require("../models/sections");
+
 const handleGetUsers = async (req, res) => {
   mongoUsers
     .find()
     .sort({ name: 1 })
     .then(users => res.json(users));
-};
-
-//debugging
-const getLogins = async (req, res) => {
-  mongoLogin.find().then(logins => res.json(logins));
 };
 
 const handleGetUser = async (req, res) => {
@@ -35,8 +32,7 @@ const newUser = async (req, res, bcrypt) => {
     password,
     trainingComplete,
     isAdmin,
-    department,
-    sections
+    department
   } = req.body;
 
   const newUser = new mongoUsers({
@@ -45,7 +41,7 @@ const newUser = async (req, res, bcrypt) => {
     trainingComplete,
     isAdmin,
     department,
-    sections
+    sections: Sections
   });
 
   const hashPass = bcrypt.hashSync(password);
@@ -82,10 +78,14 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  res.json("update comming soon");
+};
+
 module.exports = {
   handleGetUser: handleGetUser,
   handleGetUsers,
   newUser,
   deleteUser,
-  getLogins
+  updateUser
 };
