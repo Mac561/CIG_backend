@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const sectionSchema = new mongoose.Schema({
+  record: {
+    type: Number,
+    default: 0
+  },
+  isComplete: {
+    type: Boolean,
+    default: false
+  }
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -17,9 +28,17 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     require: true
-  }
-  //admin, boolean, require
-  //department, string, no require
+  },
+  isAdmin: {
+    type: Boolean,
+    require: true,
+    default: false
+  },
+  department: {
+    type: String,
+    require: false
+  },
+  sections: [sectionSchema]
   //sections, object, # of sections hardcoded, { record: int, complete: boolean }
 });
 
