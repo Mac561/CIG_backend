@@ -57,7 +57,10 @@ const newUser = async (req, res, bcrypt) => {
   if (existingUser) {
     return res.status(404).json({ message: "user already exists" });
   } else {
-    newUser.save().then(user => res.json(user));
+    newUser
+      .save()
+      .then(user => res.json(user))
+      .catch(err => console.log(err));
     newLogin.save().then(log => {});
   }
 };
