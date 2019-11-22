@@ -60,9 +60,10 @@ const createSessions = user => {
   const token = signToken(email);
   return setToken(token, id)
     .then(() => {
+      console.log("hitting point");
       return { success: "true", user, token };
     })
-    .catch(console.log);
+    .catch(err => console.log(err));
 };
 
 const signToken = email => {
