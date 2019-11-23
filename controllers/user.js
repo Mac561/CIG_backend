@@ -26,19 +26,12 @@ const handleGetUser = async (req, res) => {
 
 //change to add new data
 const newUser = async (req, res, bcrypt) => {
-  const {
-    name,
-    email,
-    password,
-    trainingComplete,
-    isAdmin,
-    department
-  } = req.body;
+  const { name, email, password, status, isAdmin, department } = req.body;
 
   const newUser = new mongoUsers({
     name,
     email,
-    trainingComplete,
+    status,
     isAdmin,
     department,
     sections: Sections

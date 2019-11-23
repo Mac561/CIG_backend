@@ -20,10 +20,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  trainingComplete: {
-    type: Boolean,
-    require: true,
-    default: false
+  status: {
+    type: String,
+    require: false,
+    default: "Not Started"
   },
   password: {
     type: String,
