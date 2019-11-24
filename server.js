@@ -57,6 +57,10 @@ server.delete("/user/:id", auth.requireAuth, (req, res) => {
   user.deleteUser(req, res);
 });
 
+server.patch("/user/:id", auth.requireAuth, (req, res) => {
+  user.updateUser(req, res);
+});
+
 //signIn
 server.post("/signIn", signIn.handleAuth(bcrypt));
 

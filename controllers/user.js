@@ -75,7 +75,23 @@ const deleteUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  res.json("update comming soon");
+  const { id } = req.params;
+  const updateObj = req.body;
+
+  //ObjectId is undefined
+  const ObjectId = require("mongodb").ObjectID;
+
+  const update = await mongoUsers.updateMany(
+    { _id: ObjectId(id) },
+    { $set: updateObj }
+  );
+
+  if (update.ok) {
+    const user = await mongoUsers.findById(id);
+    return res.status(200).json(user);
+  } else {
+    return res.status(404).json("failed update");
+  }
 };
 
 module.exports = {
