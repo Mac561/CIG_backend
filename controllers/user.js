@@ -6,7 +6,7 @@ const Sections = require("../models/sections");
 const handleGetUsers = async (req, res) => {
   mongoUsers
     .find()
-    .sort({ name: 1 })
+    .sort({ lname: 1 })
     .then(users => res.json(users));
 };
 
@@ -26,10 +26,19 @@ const handleGetUser = async (req, res) => {
 
 //change to add new data
 const newUser = async (req, res, bcrypt) => {
-  const { name, email, password, status, isAdmin, department } = req.body;
+  const {
+    fName,
+    lName,
+    email,
+    password,
+    status,
+    isAdmin,
+    department
+  } = req.body;
 
   const newUser = new mongoUsers({
-    name,
+    fName,
+    lName,
     email,
     status,
     isAdmin,

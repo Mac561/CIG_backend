@@ -12,11 +12,19 @@ const sectionSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
+  fName: {
+    type: String,
+    require: true
+  },
+  lName: {
+    type: String,
+    require: true
+  },
   email: {
     type: String,
     require: true
   },
-  name: {
+  password: {
     type: String,
     require: true
   },
@@ -24,10 +32,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: false,
     default: "Not Started"
-  },
-  password: {
-    type: String,
-    require: true
   },
   isAdmin: {
     type: Boolean,
