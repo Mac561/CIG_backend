@@ -42,7 +42,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: false
   },
-  sections: [sectionSchema]
+  section: {
+    type: Number,
+    require: false,
+    default: 0
+  }
+  // sections: [sectionSchema]
   //sections, object, # of sections hardcoded, { record: int, complete: boolean }
 });
 
