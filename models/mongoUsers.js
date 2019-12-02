@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema({
     require: false,
     default: 0
   }
+
   // sections: [sectionSchema]
   //sections, object, # of sections hardcoded, { record: int, complete: boolean }
 });
