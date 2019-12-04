@@ -48,10 +48,6 @@ server.post("/user/create", (req, res) => {
   user.newUser(req, res, bcrypt);
 });
 
-server.post("/user/:id/files", auth.requireAuth, (req, res) => {
-  user.getFiles(req, res);
-});
-
 server.put("/user/:id", auth.requireAuth, (req, res) => {
   user.updateUser(req, res);
 });

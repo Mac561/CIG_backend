@@ -29,9 +29,9 @@ const userSchema = new mongoose.Schema({
     require: true
   },
   status: {
-    type: String,
+    type: Number,
     require: false,
-    default: "Not Started"
+    default: 0
   },
   isAdmin: {
     type: Boolean,
@@ -46,6 +46,11 @@ const userSchema = new mongoose.Schema({
     type: Number,
     require: false,
     default: 0
+  },
+  time: {
+    type: Date,
+    require: false,
+    default: null
   }
 
   // sections: [sectionSchema]
