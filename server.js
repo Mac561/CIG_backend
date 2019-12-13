@@ -7,6 +7,7 @@ const mongoose = require("mongoose"); //connecting to mongodb
 const bodyParser = require("body-parser"); //request body json parser
 const cors = require("cors"); //what domains can access server
 const bcrypt = require("bcryptjs"); //for hashing passwords
+const multer = require("multer");
 
 //controllers
 const user = require("./controllers/user");
@@ -28,6 +29,13 @@ const port = process.env.PORT || 8082;
 server.use(bodyParser.json()); //be able to read json
 server.use(cors()); //domain access
 
+//multer
+const FILE_PATH = "upload";
+
+const upload = multer({
+  dest: `${FILE_PATH}`
+});
+
 //route to make sure express is working
 server.get("/", (req, res) => {
   res.send("its working");
@@ -48,8 +56,33 @@ server.post("/user/create", (req, res) => {
   user.newUser(req, res, bcrypt);
 });
 
-server.post("/user/:id/files", (req, res) => {
-  user.postFiles(req, res);
+server.post("/user/:id/file", upload.single("file"), async (req, res) => {
+  try {
+    const file = req.file;
+    const id = req.params.id;
+
+    console.log("file: ", file);
+
+    if (!file) {
+      res.status(400).send({
+        status: false,
+        data: "No File"
+      });
+    } else {
+      //send respose
+      res.send({
+        status: true,
+        message: "file is uploaded",
+        data: {
+          name: file.originalname,
+          mimetype: file.mimetype,
+          size: file.size
+        }
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 server.put("/user/:id", auth.requireAuth, (req, res) => {

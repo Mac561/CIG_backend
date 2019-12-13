@@ -103,11 +103,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const postFiles = (req, res) => {
-  console.log("hitting files");
-  console.log("files", req);
-  return res.status(201).json("ok");
-};
+const postFile = (req, res) => {};
 
 module.exports = {
   handleGetUser: handleGetUser,
@@ -115,5 +111,5 @@ module.exports = {
   newUser,
   deleteUser,
   updateUser,
-  postFiles
+  postFile
 };
