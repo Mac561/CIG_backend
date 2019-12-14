@@ -80,8 +80,6 @@ server.post("/user/:id/file", upload.single("file"), async (req, res) => {
     const file = req.file;
     const id = req.params.id;
 
-    console.log("file: ", file);
-
     if (!file) {
       res.status(400).send({
         status: false,
@@ -116,9 +114,7 @@ server.get("/user/:id/file", (req, res) => {
     .save(`${dir}/${name}.zip`);
 
   res.status(200).download(`${dir}/${name}.zip`);
-
-  //zip directory according to user id
-  //send zipped file to user
+  // fs.unlinkSync(`${dir}/${name}.zip`);
 });
 
 server.put("/user/:id", auth.requireAuth, (req, res) => {

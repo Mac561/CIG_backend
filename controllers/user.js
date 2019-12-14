@@ -82,7 +82,7 @@ const deleteUser = async (req, res) => {
       user.remove();
       res.json({ message: `deleted user with id ${id}` });
       console.log("deleted user");
-      deleteLogin(email.email);
+      deleteLogin(email);
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -91,19 +91,14 @@ const deleteUser = async (req, res) => {
 
 const deleteLogin = async email => {
   const login = await mongoLogin.findOne({ email });
-  console.log("LOGIN MONGO QUERY: ", login);
   const id = login._id;
-  console.log("ID for login delete: ", id, "email for login delete: ", email);
   let user;
   try {
     user = await mongoLogin.findById(id);
     if (user == null) {
-      console.log("user does not exist");
       return res.status(404).json({ message: "login for user does not exist" });
     } else {
-      console.log("user exists, now removing ..........");
       user.remove();
-      console.log("login removed!");
     }
   } catch (err) {
     return res.status(500).json({ message: error.message });
