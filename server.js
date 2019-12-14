@@ -8,6 +8,8 @@ const bodyParser = require("body-parser"); //request body json parser
 const cors = require("cors"); //what domains can access server
 const bcrypt = require("bcryptjs"); //for hashing passwords
 const multer = require("multer");
+const fs = require("fs");
+const zipper = require("zip-local");
 
 //controllers
 const user = require("./controllers/user");
@@ -32,9 +34,26 @@ server.use(cors()); //domain access
 //multer
 const FILE_PATH = "upload";
 
-const upload = multer({
-  dest: `${FILE_PATH}`
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const { id } = req.params;
+    const dir = `./uploads/${id}`;
+
+    fs.exists(dir, exists => {
+      if (!exists) {
+        console.log("directory doesn't exist");
+        return fs.mkdirSync(dir, { recursive: true });
+      }
+      return cb(null, dir);
+    });
+  },
+  filename: (req, file, cb) => {
+    const { id } = req.params;
+    cb(null, id + "-" + file.fieldname + "-" + Date.now());
+  }
 });
+
+const upload = multer({ storage });
 
 //route to make sure express is working
 server.get("/", (req, res) => {
@@ -85,6 +104,23 @@ server.post("/user/:id/file", upload.single("file"), async (req, res) => {
   }
 });
 
+server.get("/user/:id/file", (req, res) => {
+  console.log("Front hitting back");
+  const { id } = req.params;
+  const dir = `./uploads/${id}`;
+  const name = "zippedFiles";
+
+  zipper.sync
+    .zip(dir)
+    .compress()
+    .save(`${dir}/${name}.zip`);
+
+  res.status(200).download(`${dir}/${name}.zip`);
+
+  //zip directory according to user id
+  //send zipped file to user
+});
+
 server.put("/user/:id", auth.requireAuth, (req, res) => {
   user.updateUser(req, res);
 });
@@ -108,4 +144,10 @@ server.post("/signOut", (req, res) => {
 
 server.listen(port, () => {
   console.log(`server running on ${port}`);
+});
+
+//debug
+
+server.get("/getLogins", (req, res) => {
+  user.getLogs(req, res);
 });

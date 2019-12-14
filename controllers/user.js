@@ -1,7 +1,7 @@
 const mongoUsers = require("../models/mongoUsers");
 const mongoLogin = require("../models/mongoLogin");
 
-const Sections = require("../models/sections");
+const fs = require("fs");
 
 const handleGetUsers = async (req, res) => {
   mongoUsers
@@ -42,8 +42,7 @@ const newUser = async (req, res, bcrypt) => {
     email,
     status,
     isAdmin,
-    department,
-    sections: Sections
+    department
   });
 
   const hashPass = bcrypt.hashSync(password);
@@ -56,12 +55,16 @@ const newUser = async (req, res, bcrypt) => {
   const emailName = email;
 
   const existingUser = await mongoUsers.findOne({ email: emailName });
+  const existingLogin = await mongoLogin.findOne({ email: emailName });
   if (existingUser) {
     return res.status(404).json({ message: "user already exists" });
   } else {
     newUser
       .save()
-      .then(user => res.json(user))
+      .then(user => {
+        fs.mkdirSync(`./uploads/${user._id}`, { recursive: true });
+        res.json(user);
+      })
       .catch(err => console.log(err));
     newLogin.save().then(log => {});
   }
@@ -69,16 +72,40 @@ const newUser = async (req, res, bcrypt) => {
 
 const deleteUser = async (req, res) => {
   const { id } = req.params;
+  const { email } = req.body;
   let user;
   try {
-    user = await mongoUsers.findById(req.params.id);
+    user = await mongoUsers.findById(id);
     if (user == null) {
       return res.status(404).json({ message: "user does not exist" });
     } else {
       user.remove();
       res.json({ message: `deleted user with id ${id}` });
+      console.log("deleted user");
+      deleteLogin(email.email);
     }
   } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const deleteLogin = async email => {
+  const login = await mongoLogin.findOne({ email });
+  console.log("LOGIN MONGO QUERY: ", login);
+  const id = login._id;
+  console.log("ID for login delete: ", id, "email for login delete: ", email);
+  let user;
+  try {
+    user = await mongoLogin.findById(id);
+    if (user == null) {
+      console.log("user does not exist");
+      return res.status(404).json({ message: "login for user does not exist" });
+    } else {
+      console.log("user exists, now removing ..........");
+      user.remove();
+      console.log("login removed!");
+    }
+  } catch (err) {
     return res.status(500).json({ message: error.message });
   }
 };
@@ -103,6 +130,10 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getLogs = (req, res) => {
+  mongoLogin.find().then(users => res.json(users));
+};
+
 const postFile = (req, res) => {};
 
 module.exports = {
@@ -111,5 +142,6 @@ module.exports = {
   newUser,
   deleteUser,
   updateUser,
-  postFile
+  postFile,
+  getLogs
 };
